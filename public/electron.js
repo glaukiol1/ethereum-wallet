@@ -3,6 +3,8 @@ const path = require('path');
 const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
 
+const ipcMain = require('electron').ipcMain
+
 function createWindow() {
   // Create the browser window.
   const win = new BrowserWindow({
@@ -10,6 +12,7 @@ function createWindow() {
     height: 600,
     webPreferences: {
       nodeIntegration: true,
+      preload: path.join(__dirname, "preload.js") // use a preload script
     },
   });
 
@@ -45,3 +48,7 @@ app.on('activate', () => {
     createWindow();
   }
 });
+
+ipcMain.on('toMain', (ev,arg) => {
+    console.log(ev,arg)
+})

@@ -6,9 +6,8 @@ import {
 } from 'react-router-dom';
 import React from 'react';
 
-const Home = () => <div><h1>Home</h1></div>;
-const P404 = () => <div><h1>404 Not Found</h1></div>;
-
+import Home from './routes/Home'
+const P404 = () => <h1>Not found</h1> 
 // We give each route either a target `component`, or we can send functions in `render` or `children` 
 // that return valid nodes. `children` always returns the given node whether there is a match or not.
 const App = () => (
