@@ -2,12 +2,13 @@ const path = require('path');
 
 const { app, BrowserWindow } = require('electron');
 const isDev = require('electron-is-dev');
-
+const fs = require('fs')
 const ipcMain = require('electron').ipcMain
 
+var win
 function createWindow() {
   // Create the browser window.
-  const win = new BrowserWindow({
+    win = new BrowserWindow({
     width: 800,
     height: 600,
     webPreferences: {
@@ -49,6 +50,21 @@ app.on('activate', () => {
   }
 });
 
+function hasWallet() {
+    return fs.existsSync(path.join(__dirname, "data.enc.json"))
+}
+
+function isLoggedIn() {
+    return fs.existsSync(path.join(__dirname, "data.dec.json"))
+}
+
 ipcMain.on('toMain', (ev,arg) => {
-    console.log(ev,arg)
+    console.log(hasWallet())
+    console.log("ELECTRON: " + arg.action)
+    if (arg.action == 'hasWallet') {
+        win.webContents.send("fromMain", {type: "hasWallet", "hasWallet":hasWallet()});
+    } 
+    if (arg.action == 'isLoggedIn') {
+        win.webContents.send("fromMain", {type: "isLoggedIn", "isLoggedIn":isLoggedIn()});
+    }
 })
